@@ -1,4 +1,6 @@
-from flask import Blueprint, Response
+from flask import Blueprint, Response, jsonify
+from app.models import PostsTest
+from app.models import create_slug
 
 api = Blueprint('api', __name__) #create Bluprint, they content all routes
                                 # what we use in current api 
@@ -7,9 +9,11 @@ api = Blueprint('api', __name__) #create Bluprint, they content all routes
 @api.route("/api/posts", methods=['GET'])
 def return_posts():
     '''
-    return all posts from database in JSON
+    returns all posts from database in JSON
     '''
-    return Response(status=400) 
+    posts = PostsTest.objects()
+
+    return jsonify([post.as_dict() for post in posts])
 
 
 @api.route("/api/posts/<int:id>", methods=['GET'])

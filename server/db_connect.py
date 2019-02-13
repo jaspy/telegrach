@@ -1,3 +1,5 @@
+#  можно убирать
+
 from mongoengine import *
 from mongoengine.context_managers import switch_collection
 import config
@@ -19,7 +21,7 @@ class Posts(DynamicDocument):
     body = StringField(max_length=800)
 
 
-post1 = Posts(title="title1", body="some text")  # creating new post
-post1.save()  # saving created post to connected database
+# post1 = Posts(title="title1", body="some text")  # creating new post
+# post1.save()  # saving created post to connected database
     
-# TODO: to embed mongoengine into Flask 
+# TODO: to embed mongoengine into Flask

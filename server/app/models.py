@@ -23,11 +23,10 @@ class PostsTest(DynamicDocument):
     username = StringField(max_length=50, required=True)
     title = StringField(max_length=150, required=True)
     body = StringField(max_length=800)
-    slug = StringField(max_length=200, unique=True)
+    slug = StringField(max_length=200)
 
     def as_dict(self):
         return {
-            # "_id": self._id,
             "slug": self.slug,
             "username": self.username,
             "title": self.title,

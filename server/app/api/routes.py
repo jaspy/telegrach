@@ -1,35 +1,45 @@
-from flask import Blueprint, Response, jsonify
+from flask import Blueprint, Response, jsonify, request
 from app.models import PostsTest
 from app.models import create_slug
+import json
 
 api = Blueprint('api', __name__) #create Bluprint, they content all routes
                                 # what we use in current api 
 
 
-@api.route("/api/posts", methods=['GET'])
+@api.route("/api/posts", methods=['GET', 'POST'])
 def return_posts():
     '''
     returns all posts from database in JSON
     '''
-    posts = PostsTest.objects()
+    if request.method == 'POST':
+        data = json.loads(request.get_data())
 
-    return jsonify([post.as_dict() for post in posts])
+        title = data.get('title')
+        slug = create_slug(title)        
+
+        PostsTest(
+            title=title,
+            username=data.get('username'), 
+            body=data.get('body'), 
+            slug=slug,
+            ).save()      
+
+        return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())
+    else:
+        posts = PostsTest.objects()
+
+        return jsonify([post.as_dict() for post in posts])
 
 
-@api.route("/api/posts/<int:id>", methods=['GET'])
-def return_post():
+@api.route("/api/posts/<slug>", methods=['GET'])
+def return_post(slug):
     '''
-    return post whith cuurent id  in JSON
+    returns post whith curent slug in JSON
     '''
-    return Response(status=400)
+    post = PostsTest.objects(slug__exact=slug)
 
-
-@api.route("/api/posts/create", methods=['POST'])
-def create_post():
-    '''
-    get data and create new post in database
-    '''
-    return Response(status=400)
+    return jsonify(post[0].as_dict())
 
 
 @api.route("/api/posts/delete/<int:id>", methods=['POST'])

@@ -1,40 +1,37 @@
 <template>
   <div class="Index">
-    <button v-on:click="changeMode"> {{ currentMode }}</button>
-    <div id="input" v-show="mode === 'edit'">
-      <textarea-autosize
-        placeholder="Type something here..."
-        ref="text"
-        class="text"
-        v-model="text"
-        :min-height="30"
-        :max-height="350"
-        @blur.native="onBlurTextarea"
-      ></textarea-autosize>
-    </div>
-    <div id="result" v-show="mode === 'preview'" v-html="compiledMarked">
-    </div>
+    <noteTitle></noteTitle>
+    <br>
+    <noteWriterName></noteWriterName>
+    <br>
+    <noteStory></noteStory>
+    <controlButtons></controlButtons>
   </div>
 </template>
 
 <script>
-
+import Title from './Note/Title'
+import WriterName from './Note/WriterName'
+import Story from './Note/Story'
+import ControlButtons from './ControlButtons'
 
 export default {
   name: 'Index',
   data(){
     return {
-      text: "",
+      title: '',
+      name: '',
+      story: "",
       mode: "edit"
     }
   },
-  created(){
-    this.$refs.text.$el.focus()
+  components: {
+    noteTitle: Title,
+    noteWriterName: WriterName,
+    noteStory: Story,
+    controlButtons: ControlButtons,
   },
   computed: {
-    compiledMarked(){
-      return this.$options.filters.marked(this.text)
-    },
     currentMode(){
       return this.mode == "edit" ? "preview" : "edit" 
     }
@@ -42,18 +39,14 @@ export default {
   methods: {
     changeMode(){
       this.mode = this.mode == "edit" ? "preview" : "edit"
+    },
+    publsh(){
+      // TODO: Publish 
     }
   }
 }
 </script>
 
 <style>
-
-.text, .text:focus, .text:active  {
-  outline: none;
-  border: none;
-}
-
-
 
 </style>

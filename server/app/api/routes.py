@@ -7,7 +7,6 @@ api = Blueprint('api', __name__) #create Bluprint, they content all routes
                                 # what we use in current api 
 
 
-@api.route("/api/posts", methods=['GET'])
 def return_posts():
     '''
     returns all posts from database in JSON
@@ -17,10 +16,9 @@ def return_posts():
     return jsonify([post.as_dict() for post in posts])
 
 
-@api.route("/api/posts", methods=['POST'])
 def create_post():
     '''
-    
+    creates new post
     '''
     data = json.loads(request.get_data())
     title = data.get('title')
@@ -36,7 +34,6 @@ def create_post():
     return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())
 
 
-@api.route("/api/posts/<slug>", methods=['GET'])
 def return_post(slug):
     '''
     returns post whith curent slug in JSON
@@ -46,7 +43,6 @@ def return_post(slug):
     return jsonify(post[0].as_dict())
 
 
-@api.route("/api/posts/<slug>", methods=['DELETE'])
 def delete_post(slug):
     '''
     get id of post for delete, and delete post from database
@@ -58,7 +54,6 @@ def delete_post(slug):
     return "Succesfuly deleted"
 
 
-@api.route("/api/posts/<slug>", methods=['PUT'])
 def update_post(slug):
     '''
     returns post whith curent slug in JSON

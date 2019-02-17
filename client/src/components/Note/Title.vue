@@ -17,7 +17,7 @@ export default {
             set(newTitle){
                 this.changeTitle(newTitle)
             }
-        }
+        },
     },
     methods: {
         ...mapActions(['changeTitle'])

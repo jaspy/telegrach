@@ -1,0 +1,45 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:vue/essential",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "babel",
+    "vue",
+    "prettier"
+  ],
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "prettier/prettier": ["error",
+      {
+        "printWidth": 80,
+        "useEslint": true,
+        "tabWidth": 2,
+        "useTabs": false,
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "all",
+        "bracketSpacing": false,
+        "jsxBracketSameLine": false,
+        "parser": "babel",
+        "overrides": [
+          {
+            "files": "*.vue",
+            "options": {
+              "parser": "vue"
+            }
+          }
+        ]
+      }],
+    "comma-dangle": ["error", "always-multiline"]
+  }
+}

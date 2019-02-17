@@ -1,32 +1,31 @@
 <template>
   <div class="Home Note">
-    <noteTitle ></noteTitle>
-    <br>
-    <noteWriterName ></noteWriterName>
-    <br>
+    <noteTitle></noteTitle>
+    <br />
+    <noteWriterName></noteWriterName>
+    <br />
     <noteStory></noteStory>
-    <controlButtons ></controlButtons>
+    <controlButtons></controlButtons>
   </div>
 </template>
 
 <script>
-import Title from '../components/Note/Title'
-import WriterName from '../components/Note/WriterName'
-import Story from '../components/Note/Story'
-import ControlButtons from '../components/Note/ControlButtons'
+import Title from "../components/Note/Title.vue";
+import WriterName from "../components/Note/WriterName.vue";
+import Story from "../components/Note/Story.vue";
+import ControlButtons from "../components/Note/ControlButtons.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     noteTitle: Title,
     noteWriterName: WriterName,
     noteStory: Story,
     controlButtons: ControlButtons,
   },
-}
+};
 </script>
 
 <style lang="scss">
-@import '@/assets/note.scss'; 
-
+@import "@/assets/note.scss";
 </style>

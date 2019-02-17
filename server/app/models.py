@@ -3,14 +3,6 @@ from . import config
 from time import time
 from .utils import slugify
 
-connect(
-    db=config.mongodb['db'],
-    username=config.mongodb['username'],
-    password=config.mongodb['password'],
-    host=config.mongodb['host'],
-    port=config.mongodb['port'],
-)
-
 
 def create_slug(title):
     return slugify(f'{title}-{int(time())}')

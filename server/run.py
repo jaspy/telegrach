@@ -4,7 +4,6 @@ import os
 import click
 import sys
 
-# app = create_app('testing')
 app = create_app('development')
 manager = Manager(app)
 

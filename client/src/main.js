@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import store from './store'
+import router from './router';
 import App from './App.vue'
 import VueTextareaAutosize from 'vue-textarea-autosize'
-import marked from 'marked';
 
-Vue.filter('marked', marked)
 Vue.filter('capitalize', function (value) {
   if (!value) return ''
   value = value.toString()
@@ -20,5 +19,6 @@ Vue.config.productionTip = false
 
 new Vue({
   store,
+  router,
   render: h => h(App),
 }).$mount('#app')

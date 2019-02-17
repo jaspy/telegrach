@@ -4,9 +4,9 @@
         <button v-on:click="changeMode"> {{ mode === 'edit' ? 'preview' : 'edit' | capitalize   }} </button>
     </div>
     <div class="publish">
-        <button v-on:click="publish"> Publish </button>
+        <button v-on:click="publishNote"> Publish </button>
     </div>
-    <div class="delete" v-show="noteExists">
+    <div class="delete" v-if="noteExists">
         <button v-on:click="deleteNote"> Delete </button>
     </div>
   </div>
@@ -31,7 +31,7 @@ export default {
         }
   },
   methods: {
-    ...mapActions(['changeMode', 'publish', 'deleteNote']),
+    ...mapActions(['changeMode', 'publishNote', 'deleteNote']),
   }
 }
 </script>

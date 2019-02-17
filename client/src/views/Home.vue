@@ -1,5 +1,5 @@
 <template>
-  <div class="Home">
+  <div class="Home Note">
     <noteTitle ></noteTitle>
     <br>
     <noteWriterName ></noteWriterName>
@@ -17,9 +17,6 @@ import ControlButtons from '../components/Note/ControlButtons'
 
 export default {
   name: 'Home',
-  created(){
-    console.log('home')
-  },
   components: {
     noteTitle: Title,
     noteWriterName: WriterName,
@@ -29,5 +26,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '@/assets/note.scss'; 
+
 </style>

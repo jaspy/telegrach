@@ -1,6 +1,6 @@
 <template>
-    <div id="titleWrapper">
-        <input type="text" name="title" class="noteTitle" placeholder="Title" v-model="title">
+    <div class="titleWrapper">
+        <input type="text" name="title" class="noteTitle" placeholder="Title" v-model="title" maxlength='20'>
     </div>
 </template>
 
@@ -25,11 +25,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 
 .noteTitle, .noteTitle:focus, .noteTitle:active  {
   outline: none;
   border: none;
+}
+
+.titleWrapper {
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.titleWrapper > input {
+    width: 80%;
+    font-size: 2em;
 }
 
 </style>

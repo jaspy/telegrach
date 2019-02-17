@@ -8,8 +8,8 @@ const store = new Vuex.Store({
     state: {
       mode: 'edit',
       title: '',
-      writerName: '123',
-      story: "22",
+      writerName: '',
+      story: '',
     },
     getters: {
       mode(state){return state.mode},
@@ -21,6 +21,11 @@ const store = new Vuex.Store({
       },
     },
     mutations: {
+      initState(state, data){
+        state.title = data.title 
+        state.writerName = data.writerName 
+        state.story = data.story 
+      },
       changeMode(state){
         state.mode = state.mode == "edit" ? "preview" : "edit"
       },
@@ -33,7 +38,9 @@ const store = new Vuex.Store({
       changeStory(state, data){
           state.story = data.story
       },
-      publish(state){
+      publishNote(state){
+        // console.log(String.raw`${state.story}`)
+        // console.log(state.story.split('\n'))
         // TODO: publish note
       },
       deleteNote(state){
@@ -41,6 +48,9 @@ const store = new Vuex.Store({
       }
     },
     actions: {
+      initState({commit}, data){
+        commit('initState', data)
+      },
       changeMode ({commit}) {
         commit('changeMode')
       },
@@ -53,8 +63,8 @@ const store = new Vuex.Store({
       changeStory({commit}, story){
         commit('changeStory', {story, })
       },
-      publish({commit}){
-        commit('publish')
+      publishNote({commit}){
+        commit('publishNote')
       },
       deleteNote({commit}){
         commit('deleteNote')

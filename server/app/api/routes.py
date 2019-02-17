@@ -11,35 +11,50 @@ def return_posts():
     '''
     returns all posts from database in JSON
     '''
-    posts = PostsTest.objects()
-
-    return jsonify([post.as_dict() for post in posts])
+    if PostsTest.objects():
+        posts = PostsTest.objects()
+        return jsonify([post.as_dict() for post in posts])
+    else:
+        return jsonify({'massage': 'Post list is empty'})
 
 
 def create_post():
     '''
     creates new post
     '''
-    data = json.loads(request.get_data())
-    title = data.get('title')
-    slug = create_slug(title)        
+    try: 
+        data = json.loads(request.get_data())
+    except json.decoder.JSONDecodeError:
+        return jsonify({'error':'misss fild error'})
 
-    PostsTest(
-        title=title,
-        username=data.get('username'), 
-        body=data.get('body'),
-        slug=slug,
-        ).save()    
+    if data.get('title') and data.get('username') and data.get('body'):
+        if len(data) > 3:
+            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
 
-    return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())
+        title = data.get('title')
+        slug = create_slug(title)        
+        PostsTest(
+            title=title,
+            username=data.get('username'), 
+            body=data.get('body'),
+            slug=slug,
+            ).save()    
+
+        return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())
+
+    else:
+        return jsonify({'error': 'Empty field'})
 
 
-def return_post(slug):
+def return_post_by_slug(slug):
     '''
     returns post whith curent slug in JSON
     '''
-    post = PostsTest.objects(slug__exact=slug)
-
+    try:
+        post = PostsTest.objects(slug__exact=slug)[0]
+    except IndexError:
+        return jsonify({'error': 'Non existing slug'})
+    
     return jsonify(post[0].as_dict())
 
 
@@ -47,10 +62,12 @@ def delete_post(slug):
     '''
     get id of post for delete, and delete post from database
     '''
-
-    post1 = PostsTest.objects(slug__exact=slug)[0]
-    post1.delete()
-
+    try:
+        post = PostsTest.objects(slug__exact=slug)[0]
+    except IndexError:
+        return jsonify({'error': 'Non existing slug'})
+    
+    post.delete()
     return "Succesfuly deleted"
 
 
@@ -58,10 +75,20 @@ def update_post(slug):
     '''
     returns post whith curent slug in JSON
     '''
-    data = json.loads(request.get_data())
-
-    post1 = PostsTest.objects(slug__exact=slug)[0]
-    post1.update(**data)
-    post1.save() 
-
-    return jsonify(post1.as_dict())
+    try: 
+        data = json.loads(request.get_data())
+    except json.decoder.JSONDecodeError:
+        return jsonify({'error':'misss fild error'})
+    
+    try:
+        post = PostsTest.objects(slug__exact=slug)[0]
+    except IndexError:
+        return jsonify({'error': 'Non existing slug'})
+    
+    if data.get('title') and data.get('username') and data.get('body'):
+        if len(data) > 3:
+            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+        
+        post.update(**data)
+        post.save() 
+        return jsonify(post.as_dict())

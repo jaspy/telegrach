@@ -1,18 +1,33 @@
 <template>
     <div id="titleWrapper">
-        <input type="text" name="title" class="title" placeholder="Title">
+        <input type="text" name="title" class="noteTitle" placeholder="Title" v-model="title">
     </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
-    name: "title"
+    name: "noteTitle",
+    computed: { 
+        title: {
+            get(){
+                return this.$store.getters.title
+            },
+            set(newTitle){
+                this.changeTitle(newTitle)
+            }
+        }
+    },
+    methods: {
+        ...mapActions(['changeTitle'])
+    }
 }
 </script>
 
 <style scoped>
 
-.title, .title:focus, .title:active  {
+.noteTitle, .noteTitle:focus, .noteTitle:active  {
   outline: none;
   border: none;
 }

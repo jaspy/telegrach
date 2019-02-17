@@ -1,6 +1,7 @@
 from flask import Blueprint, Response, jsonify, request
 from app.models import PostsTest
 from app.models import create_slug
+from .utils import get_data_from_json, get_object_by_slug
 import json
 
 api = Blueprint('api', __name__) #create Bluprint, they content all routes
@@ -22,15 +23,10 @@ def create_post():
     '''
     creates new post
     '''
-    try: 
-        data = json.loads(request.get_data())
-    except json.decoder.JSONDecodeError:
-        return jsonify({'error':'misss fild error'})
+    data = get_data_from_json()
 
-    if data.get('title') and data.get('username') and data.get('body'):
-        if len(data) > 3:
-            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
-
+    if  data and data.get('title') and data.get('username') and data.get('body'):
+ 
         title = data.get('title')
         slug = create_slug(title)        
         PostsTest(
@@ -40,55 +36,52 @@ def create_post():
             slug=slug,
             ).save()    
 
-        return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())
-
     else:
-        return jsonify({'error': 'Empty field'})
+        return jsonify({'error': 'Field input Error!'})
+
+    if len(data) > 3:
+            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+    
+    return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())
 
 
 def return_post_by_slug(slug):
     '''
     returns post whith curent slug in JSON
     '''
-    try:
-        post = PostsTest.objects(slug__exact=slug)[0]
-    except IndexError:
-        return jsonify({'error': 'Non existing slug'})
-    
-    return jsonify(post[0].as_dict())
-
+    post = get_object_by_slug(slug)
+    if post:
+        return jsonify(post[0].as_dict())
+    else:
+        return jsonify({'error': 'Non existing slug'})  
 
 def delete_post(slug):
     '''
     get id of post for delete, and delete post from database
     '''
-    try:
-        post = PostsTest.objects(slug__exact=slug)[0]
-    except IndexError:
-        return jsonify({'error': 'Non existing slug'})
-    
-    post.delete()
-    return "Succesfuly deleted"
-
+    post = get_object_by_slug(slug)
+    if post:
+        post.delete()
+        return jsonify({'massage': 'Successful delete'})  
+    else:
+        return jsonify({'error': 'Non existing slug'})  
+       
 
 def update_post(slug):
     '''
     returns post whith curent slug in JSON
     '''
-    try: 
-        data = json.loads(request.get_data())
-    except json.decoder.JSONDecodeError:
-        return jsonify({'error':'misss fild error'})
-    
-    try:
-        post = PostsTest.objects(slug__exact=slug)[0]
-    except IndexError:
+    data = get_data_from_json()
+    post = get_object_by_slug(slug)
+
+    if not post:
         return jsonify({'error': 'Non existing slug'})
-    
-    if data.get('title') and data.get('username') and data.get('body'):
-        if len(data) > 3:
-            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
-        
+
+    if data and data.get('title') and data.get('username') and data.get('body'):  
         post.update(**data)
-        post.save() 
-        return jsonify(post.as_dict())
+        post.save()
+
+    if len(data) > 3:
+        return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+    
+    return jsonify(post.as_dict())

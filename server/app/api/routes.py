@@ -16,6 +16,7 @@ def return_posts():
         return jsonify([post.as_dict() for post in posts])
     else:
         return jsonify({'massage': 'Post list is empty'})
+    # return jsonify(json.loads( posts.to_json()) )
 
 
 def create_post():

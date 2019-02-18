@@ -1,7 +1,6 @@
 from mongoengine import connect
 from . import config
-# import os
-# basedir = os.path.abspath(os.path.dirname(__file__))
+import os
 
 
 class Config:
@@ -13,6 +12,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    os.environ['FLASK_CONFIG'] = 'development'
+    os.environ['FLASK_ENV'] = 'development'
 
     @staticmethod
     def connection():

@@ -4,7 +4,7 @@ import os
 import click
 import sys
 
-app = create_app('development')
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 manager = Manager(app)
 
 COV = None
@@ -38,3 +38,4 @@ def test(coverage):
 
 if __name__ == "__main__":
     manager.run()
+

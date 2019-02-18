@@ -5,3 +5,4 @@ venv/
 server/config.py
 
 tmp/
+temp/

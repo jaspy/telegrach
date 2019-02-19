@@ -1,6 +1,7 @@
 from mongoengine import connect
 from . import config
 import os
+from subprocess import call
 
 
 class Config:
@@ -12,8 +13,6 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    os.environ['FLASK_CONFIG'] = 'development'
-    os.environ['FLASK_ENV'] = 'development'
 
     @staticmethod
     def connection():
@@ -40,8 +39,8 @@ class TestingConfig(Config):
         )
 
 
-# class ProductionConfig(Config):
-#     pass
+class ProductionConfig(Config):
+    pass
 
 
 app_config = {

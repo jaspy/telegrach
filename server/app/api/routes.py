@@ -11,12 +11,9 @@ def return_posts():
     '''
     returns all posts from database in JSON
     '''
-    if PostsTest.objects():
-        posts = PostsTest.objects()
-        return jsonify([post.as_dict() for post in posts])
-    else:
-        return jsonify({'massage': 'Post list is empty'})
-    # return jsonify(json.loads( posts.to_json()) )
+    posts = [post.as_dict() for post in PostsTest.objects()]
+    
+    return jsonify(posts)
 
 
 def create_post():
@@ -53,10 +50,10 @@ def return_post_by_slug(slug):
     '''
     try:
         post = PostsTest.objects(slug__exact=slug)[0]
-    except IndexError:
-        return jsonify({'error': 'Non existing slug'})
+    except (KeyError, IndexError):
+        return "Invalid slug", 404
     
-    return jsonify(post[0].as_dict())
+    return jsonify(post.as_dict())
 
 
 def delete_post(slug):
@@ -65,8 +62,8 @@ def delete_post(slug):
     '''
     try:
         post = PostsTest.objects(slug__exact=slug)[0]
-    except IndexError:
-        return jsonify({'error': 'Non existing slug'})
+    except (KeyError, IndexError):
+        return "Invalid slug", 404
     
     post.delete()
     return "Succesfuly deleted"

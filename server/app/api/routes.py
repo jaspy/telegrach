@@ -21,17 +21,8 @@ def return_posts():
     Returns:
         JSON response with posts from database    
     '''
-<<<<<<< HEAD
     posts = PostsTest.objects()
     return jsonify([post.as_dict() for post in posts])
-=======
-    if PostsTest.objects():
-        posts = PostsTest.objects()
-        return jsonify([post.as_dict() for post in posts])
-    else:
-        return jsonify({'massage': 'Post list is empty'})
-    # return jsonify(json.loads( posts.to_json()) )
->>>>>>> api
 
 
 def create_post():

@@ -36,6 +36,36 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang='scss'>
+  .controlButtons {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+  }
+
+  .controlButtons > div > button {
+    background-color: rgb(235, 135, 21); /* Green */
+    border: 1px solid rgb(235, 135, 21);
+    color: white;
+    padding: 12px 26px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+
+  .controlButtons > div:hover > button {
+    background-color: rgb(204, 93, 19);
+  }
+
+  .controlButtons > div > button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2pt rgba(204, 93, 19, 0.8); 
+  }
+
+  .controlButtons > div {
+    margin-top: 40px;
+  }
 
 </style>

@@ -28,8 +28,8 @@ export default {
 <style scoped lang='scss'>
 
 .noteTitle, .noteTitle:focus, .noteTitle:active  {
-  outline: none;
-  border: none;
+    outline: none;
+    border: none;
 }
 
 .titleWrapper {

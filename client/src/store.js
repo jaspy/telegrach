@@ -46,6 +46,8 @@ const store = new Vuex.Store({
     },
     changeStory(state, data) {
       state.story = data.story;
+
+      // console.log(JSON.stringify(data.story));
     },
     publishNote(state) {
       // console.log(String.raw`${state.story}`)

@@ -1,6 +1,7 @@
 from flask import Blueprint, Response, jsonify, request
 from app.models import PostsTest
 from app.models import create_slug
+from .utils import get_data_from_json, get_object_by_slug
 import json
 
 api = Blueprint('api', __name__) #create Bluprint, they content all routes
@@ -9,7 +10,16 @@ api = Blueprint('api', __name__) #create Bluprint, they content all routes
 
 def return_posts():
     '''
-    returns all posts from database in JSON
+    GET all posts from database
+
+    Processes GET request, retrieves all objects from 
+    the database and returns them in JSON format
+
+    Args:
+        None
+
+    Returns:
+        JSON response with posts from database    
     '''
     posts = [post.as_dict() for post in PostsTest.objects()]
     
@@ -18,75 +28,143 @@ def return_posts():
 
 def create_post():
     '''
-    creates new post
+    Create new post in database
+
+    Processes POST request, get JSON with 
+    required fields: 'title', 'user', 'body'.
+    Combaine JSON to valid data for create
+    new post object in database.
+    
+    Args:
+        None
+        
+    Returns:
+        JSON response with created post
+        
+        if pass non existing key:
+            JSON response with {'error': 'Field input Error!'}
+        if miss required field:
+            JSON response with {'error': 'Field input Error!'}
+        if pass more than 3 required field: 
+            JSON response with  {'error': 'Expecting 3 fields, passed (number of passed fields)'}
     '''
-    try: 
-        data = json.loads(request.get_data())
-    except json.decoder.JSONDecodeError:
-        return jsonify({'error':'misss fild error'})
+    data = get_data_from_json() 
 
-    if data.get('title') and data.get('username') and data.get('body'):
-        if len(data) > 3:
-            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+    if  data and data.get('title') and data.get('username') and data.get('body'): #check entry keys
+ 
+        title = data.get('title') 
+        slug = create_slug(title)
 
-        title = data.get('title')
-        slug = create_slug(title)        
-        PostsTest(
+        PostsTest( 
             title=title,
             username=data.get('username'), 
             body=data.get('body'),
             slug=slug,
             ).save()    
 
-        return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())
-
     else:
-        return jsonify({'error': 'Empty field'})
+        return jsonify({'error': 'Field input Error!'})
+
+    if len(data) > 3: #must be equal to 3 because use only 3 required fields
+            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+    
+    return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())#get created post from database
 
 
 def return_post_by_slug(slug):
-    '''
-    returns post whith curent slug in JSON
-    '''
-    try:
-        post = PostsTest.objects(slug__exact=slug)[0]
-    except (KeyError, IndexError):
-        return "Invalid slug", 404
     
-    return jsonify(post.as_dict())
+    '''
+    
+    GET post by passing slug
 
+    Processes GET request.
+    Find object with passed slug.
+
+    Args:
+        slug (str): Value of field 'slug'   
+     
+    Returns:
+        JSON response with post who have passed slug
+
+        if passed not existing slug:
+            JSON response with: {'error': 'Non existing slug'}
+    '''
+    post = get_object_by_slug(slug)
+    if post:
+        return jsonify(post.as_dict())
+    else:
+        return "Invalid slug", 404
+        
 
 def delete_post(slug):
     '''
-    get id of post for delete, and delete post from database
-    '''
-    try:
-        post = PostsTest.objects(slug__exact=slug)[0]
-    except (KeyError, IndexError):
-        return "Invalid slug", 404
     
-    post.delete()
-    return "Succesfuly deleted"
+    DEIETE post by passing slug
 
+    Processes DELETE request.
+    Find object with passed slug and dalete him.
+
+    Args:
+        slug (str): Value of field 'slug'   
+     
+    Returns:
+        JSON response with {'massage': 'Successful delete'}
+
+        if passed not existing slug:
+            JSON response with: {'error': 'Non existing slug'}
+    '''
+    post = get_object_by_slug(slug)
+    if post:
+        post.delete()
+        return "Succesfuly deleted"
+    else:
+        return "Invalid slug", 404
+       
 
 def update_post(slug):
     '''
-    returns post whith curent slug in JSON
-    '''
-    try: 
-        data = json.loads(request.get_data())
-    except json.decoder.JSONDecodeError:
-        return jsonify({'error':'misss fild error'})
+    Update post with passing slug
+
+    Processes POST request, get JSON with 
+    required fields: 'title', 'user', 'body'.
+    Combaine JSON to valid data for create
+    new post object in database.
     
-    try:
-        post = PostsTest.objects(slug__exact=slug)[0]
-    except IndexError:
-        return jsonify({'error': 'Non existing slug'})
-    
-    if data.get('title') and data.get('username') and data.get('body'):
-        if len(data) > 3:
-            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+    Args:
+        slug (str): Value of field 'slug'
         
+    Returns:
+        JSON response with created post
+        
+        if pass non existing key:
+            JSON response with: {'error': 'Field input Error!'}
+        if miss required field:
+            JSON response with: {'error': 'Field input Error!'}
+        if pass more than 3 required field: 
+            JSON response with: {'error': 'Expecting 3 fields, passed (number of passed fields)'}
+        if passed not existing slug:
+            JSON response with: {'error': 'Non existing slug'}
+    '''
+    data = get_data_from_json()
+    post = get_object_by_slug(slug)
+    
+    if not post:
+        return jsonify({'error': {
+            "msg":'Non existing slug', 
+            "code": 404}})
+
+    
+
+    # if data and data.get('title') and data.get('username') and data.get('body'): #check entry keys
+    if all(data.values()): #check entry keys
         post.update(**data)
-        post.save() 
-        return jsonify(post.as_dict())
+        post.save()
+    else:
+        return jsonify({'error': {
+            "msg":'Field input error', 
+            "code": 504}})
+
+    # if len(data) > 3:#must be equal to 3 because use only 3 required fields
+    #     return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+    
+    return jsonify(post.as_dict())#get uodated post from database

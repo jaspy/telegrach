@@ -8,7 +8,7 @@ def create_slug(title):
     return slugify(f'{title}-{int(time())}')
 
 
-class PostsTest(DynamicDocument):
+class PostsTest(Document):
     """
     There will be docstring for it class soon
     """    

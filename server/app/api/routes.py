@@ -4,8 +4,7 @@ from app.models import create_slug
 from .utils import get_data_from_json, get_object_by_slug
 import json
 
-api = Blueprint('api', __name__) #create Bluprint, they content all routes
-                                # what we use in current api 
+api = Blueprint('api', __name__)
 
 
 def return_posts():
@@ -63,10 +62,13 @@ def create_post():
             ).save()    
 
     else:
-        return jsonify({'error': 'Field input Error!'})
+        return jsonify({'error': {
+            "msg":'Field input error', 
+            "code": 400,
+            }})
 
     if len(data) > 3: #must be equal to 3 because use only 3 required fields
-            return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+        return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
     
     return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())#get created post from database
 
@@ -93,7 +95,10 @@ def return_post_by_slug(slug):
     if post:
         return jsonify(post.as_dict())
     else:
-        return "Invalid slug", 404
+        return jsonify({'error': {
+            "msg":'Non existing slug', 
+            "code": 404,
+            }})
         
 
 def delete_post(slug):
@@ -118,7 +123,10 @@ def delete_post(slug):
         post.delete()
         return "Succesfuly deleted"
     else:
-        return "Invalid slug", 404
+        return jsonify({'error': {
+            "msg":'Non existing slug', 
+            "code": 404,
+            }})
        
 
 def update_post(slug):
@@ -151,20 +159,16 @@ def update_post(slug):
     if not post:
         return jsonify({'error': {
             "msg":'Non existing slug', 
-            "code": 404}})
+            "code": 404,
+            }})
 
-    
-
-    # if data and data.get('title') and data.get('username') and data.get('body'): #check entry keys
     if all(data.values()): #check entry keys
         post.update(**data)
         post.save()
     else:
         return jsonify({'error': {
             "msg":'Field input error', 
-            "code": 504}})
-
-    # if len(data) > 3:#must be equal to 3 because use only 3 required fields
-    #     return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
+            "code": 400,
+            }})
     
-    return jsonify(post.as_dict())#get uodated post from database
+    return jsonify(post.as_dict())

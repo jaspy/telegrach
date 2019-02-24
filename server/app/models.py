@@ -1,7 +1,7 @@
 from mongoengine import *
 from . import config
 from time import time
-from .utils import slugify
+from pytils.translit import slugify
 
 
 def create_slug(title):

@@ -3,9 +3,11 @@ from flask_script import Manager
 import os
 import click
 import sys
+from flask_cors import CORS
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 manager = Manager(app)
+CORS(app)
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):

@@ -121,10 +121,10 @@ def delete_post(slug):
     post = get_object_by_slug(slug)
     if post:
         post.delete()
-        return "Succesfuly deleted"
+        return "Succesfuly deleted", 200
     else:
         return jsonify({'error': {
-            "msg":'Non existing slug', 
+            "msg":f'Non existing slug {slug}', 
             "code": 404,
             }})
        
@@ -170,5 +170,7 @@ def update_post(slug):
             "msg":'Field input error', 
             "code": 400,
             }})
+
+    post = get_object_by_slug(slug)
     
     return jsonify(post.as_dict())

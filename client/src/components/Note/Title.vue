@@ -1,6 +1,6 @@
 <template>
     <div class="titleWrapper">
-        <input type="text" name="title" class="noteTitle" placeholder="Title" v-model="title" maxlength='20'>
+        <input type="text" name="title" class="noteTitle" placeholder="Title" v-model="title" maxlength='20' v-bind:disabled="mode === 'preview'">
     </div>
 </template>
 
@@ -9,7 +9,8 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
     name: "noteTitle",
-    computed: { 
+    computed: {
+        ...mapGetters(['mode']),
         title: {
             get(){
                 return this.$store.getters.title
@@ -41,6 +42,11 @@ export default {
 .titleWrapper > input {
     width: 80%;
     font-size: 2em;
+}
+
+.titleWrapper input:disabled {
+    background-color: #fff;
+    color: black;
 }
 
 </style>

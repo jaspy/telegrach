@@ -1,5 +1,6 @@
 <template>
     <div class="writerNameWrapper">
+        <label for="writerName" class="writerLabel" v-show="writerName">Author</label>
         <input type="text" name="writerName" class="writerName" v-model="writerName" placeholder="Your Name"  maxlength='20' v-bind:disabled="mode === 'preview'"> 
     </div>
 </template>
@@ -34,7 +35,7 @@ export default {
 
 
 .writerNameWrapper {
-    text-align: center;
+    // text-align: center;
     width: 100%;
     padding: 20px;
 }
@@ -48,5 +49,14 @@ export default {
 .writerNameWrapper input:disabled {
     background-color: #fff;
     color: black;
+}
+
+.writerLabel {
+    font-size: 1.5em;
+    color: #747474;
+    margin-right: 20px;
+    padding-right: 5px;
+    // width: 80%;
+    border-right: 2px solid #747474;
 }
 </style>

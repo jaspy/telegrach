@@ -5,6 +5,7 @@ import marked from 'marked';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import router from './router';
+import {hexString, digestMessage} from './gen-hashes'
 
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
@@ -15,6 +16,7 @@ const store = new Vuex.Store({
     title: '',
     writerName: '',
     story: '',
+    hash: '',
   },
   getters: {
     mode(state) {
@@ -32,6 +34,9 @@ const store = new Vuex.Store({
     markdownedStory(state) {
       return marked(state.story);
     },
+    hash(state) {
+      return state.hash;
+    }
   },
   mutations: {
     initState(state, data) {
@@ -51,8 +56,6 @@ const store = new Vuex.Store({
     },
     changeStory(state, data) {
       state.story = data.story;
-
-      // console.log(state);
     },
     clearState(state) {
       state.mode = 'preview';
@@ -65,8 +68,7 @@ const store = new Vuex.Store({
       state.title = data.title;
       state.writerName = data.username;
       state.story = data.body;
-
-      // localStorage.user = data.username
+      state.hash = data.hash;
     },
   },
   actions: {
@@ -86,7 +88,6 @@ const store = new Vuex.Store({
       commit('changeStory', {story});
     },
     publishNote({commit, state}, where) {
-      console.log(localStorage);
       if (where.noteSlug) {
         axios
           .put(`http://localhost:5000/api/posts/${where.noteSlug}`, {
@@ -96,24 +97,24 @@ const store = new Vuex.Store({
           })
           .then(r => r.data)
           .then(data => {
-            // this.$cookie.set('test', 'Hello world!', 1);
-            // console.log(this.$cookie.get('test'));
-
             commit('getNote', data);
           })
           .catch(e => {
             e;
           });
       } else {
+        
         axios
           .post('http://localhost:5000/api/posts', {
             title: state.title,
             username: state.writerName,
             body: state.story,
+            hash: localStorage.hash,
           })
           .then(r => r.data)
           .then(data => {
             router.push(`/${data.slug}`);
+            
             commit('clearState');
           })
           .catch(e => {
@@ -134,9 +135,14 @@ const store = new Vuex.Store({
         .delete(`http://localhost:5000/api/posts/${slug}`)
         .then(r => r.data)
         .then(data => {
-          console.log(data);
           router.push('/');
         });
+    },
+    generateHash() {
+      const hashed = (Date.now() + Math.random()).toString()
+      digestMessage(hashed).then(digestValue => {
+        localStorage.hash = hexString(digestValue);
+      });
     },
   },
 });

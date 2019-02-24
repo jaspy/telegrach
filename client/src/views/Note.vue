@@ -5,7 +5,7 @@
     <noteWriterName ></noteWriterName>
     <br>
     <noteStory></noteStory> 
-    <controlButtons v-if="isUserCreator === true"></controlButtons>
+    <controlButtons v-if="isUserCreator"></controlButtons>
   </div>
 </template>
 
@@ -32,22 +32,16 @@ export default {
     // this.$store.dispatch('changeMode')
     
     console.log(this.$store)
-
-    console.log(localStorage)
-    console.log(localStorage.username)
-    console.log(this.$store.state.writerName)
-    console.log(this.$store.state.writerName)
-    console.log(this.isUserCreator())
-    console.log(localStorage.username === this.$store.state.writerName)
   },
   computed: {
-    ...mapGetters(['writerName']),
+    ...mapGetters(['hash']),
+    isUserCreator() {
+      return (localStorage.hash === this.hash)
+    },
   },
   methods:{
     ...mapActions(['initState', 'changeMode', 'getNote']),
-    isUserCreator() {
-      return (localStorage.username === this.writerName)
-    },
+    
   },
   components: {
     noteTitle: Title,

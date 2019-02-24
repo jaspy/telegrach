@@ -16,6 +16,7 @@ class PostsTest(Document):
     title = StringField(max_length=150, required=True)
     body = StringField(max_length=800)
     slug = StringField(max_length=200)
+    hash_ = StringField(max_length=200)
 
     def as_dict(self):
         return {
@@ -23,6 +24,7 @@ class PostsTest(Document):
             "username": self.username,
             "title": self.title,
             "body": self.body,
+            "hash": self.hash_,
         }
 
 if __name__ == "__main__":

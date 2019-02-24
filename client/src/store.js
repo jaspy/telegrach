@@ -1,13 +1,13 @@
 /* eslint-disable no-param-reassign */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import router from './router';
 import marked from 'marked';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import router from './router';
 
 Vue.use(Vuex);
-Vue.use(VueAxios, axios)
+Vue.use(VueAxios, axios);
 
 const store = new Vuex.Store({
   state: {
@@ -35,10 +35,10 @@ const store = new Vuex.Store({
   },
   mutations: {
     initState(state, data) {
-      state.mode = "edit";
-      state.title = data && data.title ? data.title : "";
-      state.writerName = data && data.writerName ? data.writerName : "";
-      state.story = data && data.story ? data.story : "";
+      state.mode = 'edit';
+      state.title = data && data.title ? data.title : '';
+      state.writerName = data && data.writerName ? data.writerName : '';
+      state.story = data && data.story ? data.story : '';
     },
     changeMode(state) {
       state.mode = state.mode == 'edit' ? 'preview' : 'edit';
@@ -54,17 +54,17 @@ const store = new Vuex.Store({
 
       // console.log(state);
     },
-    clearState(state){
-      state.mode = 'preview'
-      state.title= ''
+    clearState(state) {
+      state.mode = 'preview';
+      state.title = '';
       // state.writerName= ''
-      state.story = ''
+      state.story = '';
     },
     getNote(state, data) {
-      state.mode = 'preview'
-      state.title = data.title
-      state.writerName= data.username
-      state.story = data.body
+      state.mode = 'preview';
+      state.title = data.title;
+      state.writerName = data.username;
+      state.story = data.body;
 
       // localStorage.user = data.username
     },
@@ -86,41 +86,47 @@ const store = new Vuex.Store({
       commit('changeStory', {story});
     },
     publishNote({commit, state}, where) {
-      console.log(localStorage)
+      console.log(localStorage);
       if (where.noteSlug) {
         axios
-        .put(`http://localhost:5000/api/posts/${where.noteSlug}`, {
-          title: state.title,
-          username: state.writerName,
-          body: state.story,
-        })
-        .then(r => r.data)
-        .then(data => {
-          // this.$cookie.set('test', 'Hello world!', 1);
-          // console.log(this.$cookie.get('test'));
-          
-          commit('getNote', data)
-        }).catch(e => {e})
+          .put(`http://localhost:5000/api/posts/${where.noteSlug}`, {
+            title: state.title,
+            username: state.writerName,
+            body: state.story,
+          })
+          .then(r => r.data)
+          .then(data => {
+            // this.$cookie.set('test', 'Hello world!', 1);
+            // console.log(this.$cookie.get('test'));
+
+            commit('getNote', data);
+          })
+          .catch(e => {
+            e;
+          });
       } else {
         axios
-        .post('http://localhost:5000/api/posts', {
-          title: state.title,
-          username: state.writerName,
-          body: state.story,
-        })
-        .then(r => r.data)
-        .then(data => {
-          router.push(`/${data.slug}`)
-          commit('clearState')
-        }).catch(e => {e});
+          .post('http://localhost:5000/api/posts', {
+            title: state.title,
+            username: state.writerName,
+            body: state.story,
+          })
+          .then(r => r.data)
+          .then(data => {
+            router.push(`/${data.slug}`);
+            commit('clearState');
+          })
+          .catch(e => {
+            e;
+          });
       }
     },
-    getNote({commit}, slug) {
-      axios
+    async getNote({commit}, slug) {
+      await axios
         .get(`http://localhost:5000/api/posts/${slug}`)
         .then(r => r.data)
         .then(data => {
-          commit('getNote', data)
+          commit('getNote', data);
         });
     },
     deleteNote({commit}, slug) {
@@ -128,8 +134,8 @@ const store = new Vuex.Store({
         .delete(`http://localhost:5000/api/posts/${slug}`)
         .then(r => r.data)
         .then(data => {
-          console.log(data)
-          router.push('/')          
+          console.log(data);
+          router.push('/');
         });
     },
   },

@@ -52,12 +52,12 @@ const store = new Vuex.Store({
     changeStory(state, data) {
       state.story = data.story;
 
-      console.log(state);
+      // console.log(state);
     },
     clearState(state){
       state.mode = 'preview'
       state.title= ''
-      state.writerName= ''
+      // state.writerName= ''
       state.story = ''
     },
     getNote(state, data) {
@@ -65,6 +65,8 @@ const store = new Vuex.Store({
       state.title = data.title
       state.writerName= data.username
       state.story = data.body
+
+      // localStorage.user = data.username
     },
   },
   actions: {
@@ -84,6 +86,7 @@ const store = new Vuex.Store({
       commit('changeStory', {story});
     },
     publishNote({commit, state}, where) {
+      console.log(localStorage)
       if (where.noteSlug) {
         axios
         .put(`http://localhost:5000/api/posts/${where.noteSlug}`, {
@@ -93,6 +96,9 @@ const store = new Vuex.Store({
         })
         .then(r => r.data)
         .then(data => {
+          // this.$cookie.set('test', 'Hello world!', 1);
+          // console.log(this.$cookie.get('test'));
+          
           commit('getNote', data)
         }).catch(e => {e})
       } else {
@@ -104,19 +110,16 @@ const store = new Vuex.Store({
         })
         .then(r => r.data)
         .then(data => {
-        router.push(`/${data.slug}`)
-        // console.log(data)
+          router.push(`/${data.slug}`)
           commit('clearState')
         }).catch(e => {e});
       }
     },
     getNote({commit}, slug) {
-      // commit('getNote')
       axios
         .get(`http://localhost:5000/api/posts/${slug}`)
         .then(r => r.data)
         .then(data => {
-          // console.log(data)
           commit('getNote', data)
         });
     },

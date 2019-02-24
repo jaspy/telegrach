@@ -33,11 +33,12 @@ export default {
   methods: {
     ...mapActions(['changeMode', 'publishNote', 'deleteNote']),
     pubOrEdit() {
+      localStorage.username = this.$store.getters.writerName
       this.publishNote(this.$route.params)
     },
     deleting() {
       this.deleteNote(this.$route.params.noteSlug)
-    }
+    },    
   }
 }
 </script>

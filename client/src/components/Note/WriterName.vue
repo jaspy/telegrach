@@ -1,6 +1,6 @@
 <template>
     <div class="writerNameWrapper">
-        <input type="text" name="writerName" class="writerName" v-model="writerName" placeholder="Your Name"  maxlength='20'> 
+        <input type="text" name="writerName" class="writerName" v-model="writerName" placeholder="Your Name"  maxlength='20' v-bind:disabled="mode === 'preview'"> 
     </div>
 </template>
 
@@ -9,7 +9,8 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
     name: "WriterName",
-    computed: { 
+    computed: {
+        ...mapGetters(['mode']),
         writerName: {
             get(){
                 return this.$store.getters.writerName
@@ -42,5 +43,10 @@ export default {
     width: 80%;
     // padding: 30px;
     font-size: 1.5em;
+}
+
+.writerNameWrapper input:disabled {
+    background-color: #fff;
+    color: black;
 }
 </style>

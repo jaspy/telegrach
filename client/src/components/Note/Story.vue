@@ -1,6 +1,6 @@
 <template>
     <div class="story">
-        <div class="input" v-show="currentMode === 'edit'">
+        <div class="input" v-show="mode === 'edit'">
             <textarea-autosize
                 placeholder="Type something here..."
                 ref="story"
@@ -10,7 +10,7 @@
                 :min-width="300"
             ></textarea-autosize>
         </div>
-        <div id="result" v-html="markdownedStory" v-show="currentMode === 'preview'"></div>
+        <div id="result" v-html="markdownedStory" v-show="mode === 'preview'"></div>
     </div>
 </template>
 
@@ -22,9 +22,6 @@ export default {
     name: "story",
     computed: {
         ...mapGetters(['mode', 'story','markdownedStory']),
-        currentMode(){
-            return this.mode
-        },
         rawStory: {
             get(){
                 return this.story
@@ -50,7 +47,7 @@ export default {
 
 
 .story {
-    text-align: center;
+    // text-align: center;
     width: 100%;
     // padding: 20px;
     .input {
@@ -62,6 +59,11 @@ export default {
 
 .story  textarea {
     // width: 100%;
+    font-size: 2em;
+}
+
+.story div#result {
+    word-break: break-all;
     font-size: 2em;
 }
 

@@ -19,15 +19,21 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Note',
   created(){
-    console.log(this.$route.params)
+    console.log(this.$route.params);
+    
     // fetch data from server
     // const data = await axios.get().then() .... . catch()
     // if error - alert
     // const data = {}
     // this.initState(data)
+    // console.log()
+    // this.changeMode();
+    // this.$store.dispatch('changeMode')
+    this.$store.dispatch('getNote', this.$route.params.noteSlug)
+    console.log(this.$store)
   },
-  methoods:{
-    ...mapActions(['initState'])
+  methods:{
+    ...mapActions(['initState', 'changeMode', 'getNote'])
   },
   components: {
     noteTitle: Title,

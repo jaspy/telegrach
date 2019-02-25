@@ -49,7 +49,7 @@ def create_post():
     '''
     data = get_data_from_json() 
 
-    if  data and data.get('title') and data.get('username') and data.get('body'): #check entry keys
+    if  data and data.get('title') and data.get('username') and data.get('body'):
  
         title = data.get('title') 
         slug = create_slug(title)
@@ -59,6 +59,7 @@ def create_post():
             username=data.get('username'), 
             body=data.get('body'),
             slug=slug,
+            hash_=data.get('hash'),
             ).save()    
 
     else:
@@ -66,11 +67,8 @@ def create_post():
             "msg":'Field input error', 
             "code": 400,
             }})
-
-    if len(data) > 3: #must be equal to 3 because use only 3 required fields
-        return jsonify({'error': f'Expecting 3 fields, passed {len(data)}'})
     
-    return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())#get created post from database
+    return jsonify(PostsTest.objects(slug__exact=slug)[0].as_dict())
 
 
 def return_post_by_slug(slug):

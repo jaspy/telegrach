@@ -31,10 +31,13 @@ export default {
         }
   },
   methods: {
-    ...mapActions(['changeMode', 'publishNote', 'deleteNote']),
+    ...mapActions(['changeMode', 'publishNote', 'deleteNote', 'generateHash']),
     pubOrEdit() {
-      localStorage.username = this.$store.getters.writerName
-      this.publishNote(this.$route.params)
+      localStorage.username = this.$store.getters.writerName;
+      if (!this.$route.params.noteSlug && !localStorage.hash) {
+        this.generateHash()
+      };
+      this.publishNote(this.$route.params);
     },
     deleting() {
       this.deleteNote(this.$route.params.noteSlug)

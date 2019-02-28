@@ -1,6 +1,6 @@
 from flask import jsonify, request
 import json
-from app.models import PostsTest
+from .models import PostsTest
 
 def get_data_from_json():
     '''

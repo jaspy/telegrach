@@ -1,24 +1,23 @@
-from flask import Blueprint, Response, jsonify, request
-from app.models import PostsTest
-from app.models import create_slug
-from .utils import get_data_from_json, get_object_by_slug
 import json
-
-api = Blueprint('api', __name__)
+from flask import Blueprint, Response, jsonify, request, render_template, url_for, send_from_directory
+from .utils import get_data_from_json, get_object_by_slug
+from .models import PostsTest
+import os
+from .models import create_slug
 
 
 def return_posts():
     '''
     GET all posts from database
 
-    Processes GET request, retrieves all objects from 
+    Processes GET request, retrieves all objects from
     the database and returns them in JSON format
 
     Args:
         None
 
     Returns:
-        JSON response with posts from database    
+        JSON response with posts from database
     '''
     posts = [post.as_dict() for post in PostsTest.objects()]
     
@@ -29,7 +28,7 @@ def create_post():
     '''
     Create new post in database
 
-    Processes POST request, get JSON with 
+    Processes POST request, get JSON with
     required fields: 'title', 'user', 'body'.
     Combaine JSON to valid data for create
     new post object in database.
@@ -72,7 +71,6 @@ def create_post():
 
 
 def return_post_by_slug(slug):
-    
     '''
     
     GET post by passing slug
@@ -89,6 +87,7 @@ def return_post_by_slug(slug):
         if passed not existing slug:
             JSON response with: {'error': 'Non existing slug'}
     '''
+    
     post = get_object_by_slug(slug)
     if post:
         return jsonify(post.as_dict())

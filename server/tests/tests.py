@@ -1,6 +1,6 @@
 import unittest
 from app import create_app
-from app.models import PostsTest, create_slug
+from app.api.models import PostsTest, create_slug
 from flask import current_app, url_for
 from json import loads
 import os
@@ -47,7 +47,6 @@ class ApiTestCase(unittest.TestCase):
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            # loads(PostsTest.objects().to_json()),
             [post.as_dict() for post in PostsTest.objects()],
             response.get_json()
         )

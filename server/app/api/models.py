@@ -1,5 +1,5 @@
 from mongoengine import *
-from . import config
+from app import config
 from time import time
 from pytils.translit import slugify
 
@@ -26,8 +26,3 @@ class PostsTest(Document):
             "body": self.body,
             "hash": self.hash_,
         }
-
-if __name__ == "__main__":
-    post1 = PostsTest(title="test_post", username="@test_user", body="some text", id_ = create_slug(self.title))
-    post1.save()
-    

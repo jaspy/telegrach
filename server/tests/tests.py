@@ -96,6 +96,6 @@ class ApiTestCase(unittest.TestCase):
         response = self.client.get(f'api/posts/{slug}')
 
         self.assertEqual(
-            "Invalid slug",
-            response.get_data(as_text=True)
+            {'error': {'code': 404, 'msg': 'Non existing slug'}},
+            response.get_json()
         )

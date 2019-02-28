@@ -1,4 +1,3 @@
-from .controllers import *
 import json
 from flask import Blueprint, Response, jsonify, request, render_template, url_for, send_from_directory
 import os

@@ -19,6 +19,7 @@ def return_posts():
     Returns:
         JSON response with posts from database
     '''
+    
     posts = [post.as_dict() for post in PostsTest.objects()]
     
     return jsonify(posts)

@@ -1,7 +1,13 @@
 <template>
     <div class="titleWrapper">
         <label for="title" class="titleLabel" v-show="title">Title</label>
-        <input type="text" name="title" class="noteTitle" placeholder="Title" v-model="title" maxlength='20' v-bind:disabled="mode === 'preview'">
+        <input type="text" 
+            name="title" 
+            class="noteTitle"
+            placeholder="Title" 
+            v-model="title" 
+            maxlength='20' 
+            v-bind:disabled="mode === 'preview'">
     </div>
 </template>
 
@@ -18,12 +24,12 @@ export default {
             },
             set(newTitle){
                 this.changeTitle(newTitle)
-            }
+            },
         },
     },
     methods: {
-        ...mapActions(['changeTitle'])
-    }
+        ...mapActions(['changeTitle']),
+    },
 }
 </script>
 
@@ -35,7 +41,6 @@ export default {
 }
 
 .titleWrapper {
-    // text-align: center;
     width: 100%;
     padding: 20px;
 }

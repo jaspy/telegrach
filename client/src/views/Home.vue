@@ -18,10 +18,8 @@ import ControlButtons from "../components/Note/ControlButtons.vue";
 export default {
   name: "Home",
   created() {
-    console.log(this.$route.params);
-    console.log(this.$store)
-  this.$store.dispatch('initState')
-},
+    this.$store.dispatch('initState')
+  },
   components: {
     noteTitle: Title,
     noteWriterName: WriterName,

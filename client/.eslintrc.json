@@ -19,6 +19,7 @@
     "node": true
   },
   "rules": {
+    "no-console": "off",
     "prettier/prettier": ["error",
       {
         "printWidth": 80,

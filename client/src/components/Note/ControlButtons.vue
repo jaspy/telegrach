@@ -1,13 +1,13 @@
 <template>
   <div class="controlButtons">
     <div class="changeMode">
-        <button v-on:click="changeMode"> {{ mode === 'edit' ? 'preview' : 'edit' | capitalize   }} </button>
+        <button v-on:click="changeMode"> {{ currentMode | capitalize   }} </button>
     </div>
     <div class="publish">
         <button v-on:click="pubOrEdit"> Publish </button>
     </div>
     <div class="delete" v-if="noteExists">
-        <button v-on:click="deleting"> Delete </button>
+        <button v-on:click="delNote"> Delete </button>
     </div>
   </div>
 </template>
@@ -24,25 +24,28 @@ export default {
             },
             set(){
                 this.changeMode()
-            }
+            },
         },
         noteExists(){
-          return this.$route && this.$route.params && this.$route.params.noteSlug ? true : false
-        }
+          return !!(this.$route && this.$route.params && this.$route.params.noteSlug)
+        },
+        currentMode(){
+          return this.mode === 'edit' ? 'preview' : 'edit'
+        },
   },
   methods: {
-    ...mapActions(['changeMode', 'publishNote', 'deleteNote', 'generateHash']),
+    ...mapActions(['changeMode', 'publishNote', 'deleteNote','generateHash']),
     pubOrEdit() {
       localStorage.username = this.$store.getters.writerName;
       if (!this.$route.params.noteSlug && !localStorage.hash) {
         this.generateHash()
       };
-      this.publishNote(this.$route.params);
-    },
-    deleting() {
+      this.publishNote(this.$route.params.noteSlug);
+    }, 
+    delNote() {
       this.deleteNote(this.$route.params.noteSlug)
     },    
-  }
+  },
 }
 </script>
 

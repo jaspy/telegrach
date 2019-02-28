@@ -20,18 +20,6 @@ export default {
   name: 'Note',
   async created(){
     await this.$store.dispatch('getNote', this.$route.params.noteSlug)
-    console.log(this.$route.params);
-    
-    // fetch data from server
-    // const data = await axios.get().then() .... . catch()
-    // if error - alert
-    // const data = {}
-    // this.initState(data)
-    // console.log()
-    // this.changeMode();
-    // this.$store.dispatch('changeMode')
-    
-    console.log(this.$store)
   },
   computed: {
     ...mapGetters(['hash']),

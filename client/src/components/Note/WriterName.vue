@@ -1,7 +1,14 @@
 <template>
     <div class="writerNameWrapper">
         <label for="writerName" class="writerLabel" v-show="writerName">Author</label>
-        <input type="text" name="writerName" class="writerName" v-model="writerName" placeholder="Your Name"  maxlength='20' v-bind:disabled="mode === 'preview'"> 
+        <input 
+            type="text" 
+            name="writerName" 
+            class="writerName" 
+            v-model="writerName" 
+            placeholder="Your Name"  
+            maxlength='20' 
+            v-bind:disabled="mode === 'preview'"> 
     </div>
 </template>
 
@@ -18,12 +25,12 @@ export default {
             },
             set(newWriterName){
                 this.changeWriterName(newWriterName)
-            }
-        }
+            },
+        },
     },
     methods: {
-        ...mapActions(['changeWriterName'])
-    }
+        ...mapActions(['changeWriterName']),
+    },
 }
 </script>
 
@@ -35,14 +42,12 @@ export default {
 
 
 .writerNameWrapper {
-    // text-align: center;
     width: 100%;
     padding: 20px;
 }
 
 .writerNameWrapper > input {
     width: 80%;
-    // padding: 30px;
     font-size: 1.5em;
 }
 
@@ -56,7 +61,6 @@ export default {
     color: #747474;
     margin-right: 20px;
     padding-right: 5px;
-    // width: 80%;
     border-right: 2px solid #747474;
 }
 </style>

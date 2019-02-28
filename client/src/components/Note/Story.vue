@@ -28,12 +28,12 @@ export default {
             },
             set(newValue){
                 this.changeStory(newValue)
-            }
-        }
+            },
+        },
     },
     methods: {
         ...mapActions(['changeMode', 'changeStory']),
-    }
+    },
 }
 </script>
 
@@ -47,18 +47,14 @@ export default {
 
 
 .story {
-    // text-align: center;
     width: 100%;
-    // padding: 20px;
-    .input {
-        // padding: 
+    .input { 
         width: 100%;
     }
 }
 
 
 .story  textarea {
-    // width: 100%;
     font-size: 2em;
 }
 

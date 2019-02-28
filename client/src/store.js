@@ -5,7 +5,7 @@ import marked from 'marked';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import router from './router';
-import {hexString, digestMessage} from './gen-hashes'
+import {hexString, digestMessage} from './gen-hashes';
 
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
@@ -36,7 +36,7 @@ const store = new Vuex.Store({
     },
     hash(state) {
       return state.hash;
-    }
+    },
   },
   mutations: {
     initState(state, data) {
@@ -46,7 +46,7 @@ const store = new Vuex.Store({
       state.story = data && data.story ? data.story : '';
     },
     changeMode(state) {
-      state.mode = state.mode == 'edit' ? 'preview' : 'edit';
+      state.mode = state.mode === 'edit' ? 'preview' : 'edit';
     },
     changeTitle(state, data) {
       state.title = data.newTitle;
@@ -60,7 +60,6 @@ const store = new Vuex.Store({
     clearState(state) {
       state.mode = 'preview';
       state.title = '';
-      // state.writerName= ''
       state.story = '';
     },
     getNote(state, data) {
@@ -87,23 +86,19 @@ const store = new Vuex.Store({
     changeStory({commit}, story) {
       commit('changeStory', {story});
     },
-    publishNote({commit, state}, where) {
-      if (where.noteSlug) {
+    publishNote({commit, state}, slug) {
+      if (slug) {
+        // update note
         axios
-          .put(`http://localhost:5000/api/posts/${where.noteSlug}`, {
+          .put(`http://localhost:5000/api/posts/${slug}`, {
             title: state.title,
             username: state.writerName,
             body: state.story,
           })
-          .then(r => r.data)
-          .then(data => {
-            commit('getNote', data);
-          })
-          .catch(e => {
-            e;
-          });
+          .then(response => commit('getNote', response.data))
+          .catch(console.log);
       } else {
-        
+        // create note
         axios
           .post('http://localhost:5000/api/posts', {
             title: state.title,
@@ -111,15 +106,11 @@ const store = new Vuex.Store({
             body: state.story,
             hash: localStorage.hash,
           })
-          .then(r => r.data)
-          .then(data => {
-            router.push(`/${data.slug}`);
-            
+          .then(response => {
+            router.push(`/${response.data.slug}`);
             commit('clearState');
           })
-          .catch(e => {
-            e;
-          });
+          .catch(console.log);
       }
     },
     async getNote({commit}, slug) {
@@ -131,15 +122,14 @@ const store = new Vuex.Store({
         });
     },
     deleteNote({commit}, slug) {
-      axios
-        .delete(`http://localhost:5000/api/posts/${slug}`)
-        .then(r => r.data)
-        .then(data => {
-          router.push('/');
-        });
+      axios.delete(`http://localhost:5000/api/posts/${slug}`).then(() => {
+        // console.log(res);
+        commit('clearState');
+        router.push('/');
+      });
     },
     generateHash() {
-      const hashed = (Date.now() + Math.random()).toString()
+      const hashed = (Date.now() + Math.random()).toString();
       digestMessage(hashed).then(digestValue => {
         localStorage.hash = hexString(digestValue);
       });

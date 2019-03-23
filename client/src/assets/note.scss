@@ -1,0 +1,19 @@
+.Note {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    @media (max-width: 600px) {
+      width: 100%;
+    }
+    @media (min-width: 600px) {
+        width: 50%;
+    }
+    
+    input {
+
+    padding: 0;
+    margin: 0;
+    }
+}

@@ -1,4 +1,9 @@
 __pycache__/
 .vscode/
-venv/
-# server/app/config.py
+
+venv/ 
+server/app/config.py
+server/public
+
+tmp/
+temp/

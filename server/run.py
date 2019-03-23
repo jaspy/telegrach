@@ -4,8 +4,17 @@ import os
 import click
 import sys
 from flask_cors import CORS
+from dotenv import load_dotenv
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+load_dotenv(".env")
+if os.environ.get('FLASK_ENV') == 'production':
+    load_dotenv('.env.prod')
+elif os.environ.get('FLASK_ENV') == 'testing':
+    load_dotenv('.env.test')
+elif os.environ.get('FLASK_ENV') == 'development':
+    load_dotenv('.env.dev')
+
+app = create_app(os.environ.get('FLASK_CONFIG', 'development'))
 manager = Manager(app)
 CORS(app)
 

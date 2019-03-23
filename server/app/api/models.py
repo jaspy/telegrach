@@ -1,8 +1,6 @@
 from mongoengine import *
-from app import config
 from time import time
 from pytils.translit import slugify
-
 
 def create_slug(title):
     return slugify(f'{title}-{int(time())}')

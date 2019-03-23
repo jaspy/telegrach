@@ -1,11 +1,8 @@
 from mongoengine import connect
-from . import config
 import os
 from subprocess import call
 
-
 class Config:
-
     @classmethod
     def init_app(cls, app):
         cls.connection()
@@ -17,11 +14,11 @@ class DevelopmentConfig(Config):
     @staticmethod
     def connection():
         connect(
-            db=config.mongodb['db'],
-            username=config.mongodb['username'],
-            password=config.mongodb['password'],
-            host=config.mongodb['host'],
-            port=config.mongodb['port'],
+            db=str(os.getenv("FLASK_MONGODB_DBNAME")),
+            username=str(os.getenv("FLASK_MONGODB_USERNAME")),
+            password=str(os.getenv("FLASK_MONGODB_USERPASSWORD")),
+            host=str(os.getenv("FLASK_MONGODB_HOST")),
+            port=int(os.getenv("FLASK_MONGODB_PORT")),
         )
 
 
@@ -31,20 +28,29 @@ class TestingConfig(Config):
     @staticmethod
     def connection():
         connect(
-            db=config.mongodb_test['db'],
-            username=config.mongodb_test['username'],
-            password=config.mongodb_test['password'],
-            host=config.mongodb_test['host'],
-            port=config.mongodb_test['port'],
+            db=os.getenv("FLASK_MONGODB_DBNAME"),
+            username=os.getenv("FLASK_MONGODB_USERNAME"),
+            password=os.getenv("FLASK_MONGODB_USERPASSWORD"),
+            host=os.getenv("FLASK_MONGODB_HOST"),
+            port=int(os.getenv("FLASK_MONGODB_PORT")),
         )
 
 
 class ProductionConfig(Config):
-    pass
+    @staticmethod
+    def connection():
+        connect(
+            db=os.getenv("FLASK_MONGODB_DBNAME"),
+            username=os.getenv("FLASK_MONGODB_USERNAME"),
+            password=os.getenv("FLASK_MONGODB_USERPASSWORD"),
+            host=os.getenv("FLASK_MONGODB_HOST"),
+            port=int(os.getenv("FLASK_MONGODB_PORT")),
+        )
 
 
 app_config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
+    'production': ProductionConfig,
     'default': DevelopmentConfig
 }

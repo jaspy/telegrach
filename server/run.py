@@ -3,7 +3,7 @@ from flask_script import Manager
 import os
 import click
 import sys
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 
 load_dotenv(".env")
@@ -15,8 +15,8 @@ elif os.environ.get('FLASK_ENV') == 'development':
     load_dotenv('.env.dev')
 
 app = create_app(os.environ.get('FLASK_CONFIG', 'development'))
+CORS(app, supports_credentials=True)
 manager = Manager(app)
-CORS(app)
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):

@@ -90,7 +90,7 @@ const store = new Vuex.Store({
       if (slug) {
         // update note
         axios
-          .put(`http://localhost:5000/api/posts/${slug}`, {
+          .put(`/api/posts/${slug}`, {
             title: state.title,
             username: state.writerName,
             body: state.story,
@@ -100,7 +100,7 @@ const store = new Vuex.Store({
       } else {
         // create note
         axios
-          .post('http://localhost:5000/api/posts', {
+          .post('/api/posts', {
             title: state.title,
             username: state.writerName,
             body: state.story,
@@ -115,14 +115,14 @@ const store = new Vuex.Store({
     },
     async getNote({commit}, slug) {
       await axios
-        .get(`http://localhost:5000/api/posts/${slug}`)
+        .get(`/api/posts/${slug}`)
         .then(r => r.data)
         .then(data => {
           commit('getNote', data);
         });
     },
     deleteNote({commit}, slug) {
-      axios.delete(`http://localhost:5000/api/posts/${slug}`).then(() => {
+      axios.delete(`/api/posts/${slug}`).then(() => {
         // console.log(res);
         commit('clearState');
         router.push('/');

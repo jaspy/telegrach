@@ -6,8 +6,12 @@ static = Blueprint('static', __name__, static_folder='../../public')
 
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../../public')
 
+@static.route('/')
+def app():
+    return send_from_directory(static_file_dir, 'index.html')
+
 @static.route('/<query>')
-def app(query):
+def app_routes(query):
     return send_from_directory(static_file_dir, 'index.html')
 
 @static.route('/<path:path>')

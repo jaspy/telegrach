@@ -4,21 +4,27 @@ Description coming soon.
 
 ## Getting Started
 
+### Requirements
+- `node 10.15.1`
+- `npm 6.4.1`
+- `python3.6`
+
+
 ### Installing
 
-Install dependencies for server 
+First, install dependencies for server 
 
 ```
-cd server/  && 
-virtualenv -p python3 venv && 
+cd server  &&  
+virtualenv -p python3.6 venv &&
 source venv/bin/activate && 
 pip3 install -r requirements.txt
 ```
 
-Install dependencies for client 
+Then, install dependencies for client 
 
 ```
-cd client/
+cd client && 
 npm install
 ```
 
@@ -36,33 +42,37 @@ Ensure that settings for MongoDB are correct.
 
 Run server
 ```
-cd server/ 
+cd server && 
 FLASK_ENV=development flask run 
 ```
+By default, server starts on `3000` port. You can change that in `server/.env`
 
-Run front
+Open new shell and run front
 ```
-cd client/ 
+cd client && 
 npm run serve
 ```
+
+Check `localhost:8080` 
 
 ## Running the tests
 
 ```
-cd server/
+cd server &&
 FLASK_ENV=testing flask test
 ```
 
 ## Deployment
 
+Before deploy, make sure that client has correct server host and port in `client/.env`.  
 
-Building frontend and put it into `server/public`
+Build frontend and put it into `server/public`
 ```
 cd client/
 npm run build
 ```
 
-Then, run flask with static serving from `server/public/`
+And run flask in `production` mode which also provides static serving from `server/public/`
 ```
 cd server/
 FLASK_ENV=production flask run
@@ -72,12 +82,12 @@ FLASK_ENV=production flask run
 
 * **Alex Gorbov** - [foobic](https://github.com/foobic)
 * **Vlad Novosadenko** - [v-lad](https://github.com/v-lad)
-* **Oleksandr Zhinzher** - [foobic](https://github.com/alle-zhinzher)
+* **Oleksandr Zhinzher** - [alle-zhinzher](https://github.com/alle-zhinzher)
 
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
-Inspired by telegra.ph.
+Inspired by [telegra.ph](https://telegra.ph).
 

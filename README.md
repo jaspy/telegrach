@@ -1,6 +1,7 @@
 # Telegrach
 
-Description coming soon.
+Platform for creating, editing, viewing and deleting anonymous articles. Available feature to insert images and youtube-videos through markdown support.
+Telegrach was written on Flask and VueJS. MongoDB was used as a database.
 
 ## Getting Started
 
@@ -8,7 +9,7 @@ Description coming soon.
 - `node 10.15.1`
 - `npm 6.4.1`
 - `python3.6`
-
+- `mongodb`
 
 ### Installing
 
